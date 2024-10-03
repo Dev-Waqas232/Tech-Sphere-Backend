@@ -1,13 +1,19 @@
-import express from "express";
+import express, { Application } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import userRoutes from "./routes/user";
+
 dotenv.config();
 
-const app = express();
+const app: Application = express();
+
+app.use(express.json());
 
 app.use(cors());
+
+app.use("/api", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
