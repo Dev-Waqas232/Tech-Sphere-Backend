@@ -33,4 +33,32 @@ const signUp = async (req: Request, res: Response) => {
   }
 };
 
-export { signUp };
+const signin = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "Invalid Credentials", ok: false });
+
+    const passMatch = await bcrypt.compare(password, user.password);
+    if (!passMatch)
+      return res
+        .status(404)
+        .json({ message: "Invalid Credentials", ok: false });
+
+    const token = generateToken(user._id.toString());
+
+    res.status(200).json({
+      message: "Sign in successfull",
+      ok: true,
+      data: { token, user },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", ok: false });
+  }
+};
+
+export { signUp, signin };
