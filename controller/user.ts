@@ -21,7 +21,7 @@ const signUp = async (req: Request, res: Response) => {
       isAdmin,
     });
 
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id.toString(), user.isAdmin);
     res.status(201).json({
       message: "Sign up Successfull",
       ok: true,
@@ -48,7 +48,7 @@ const signin = async (req: Request, res: Response) => {
         .status(404)
         .json({ message: "Invalid Credentials", ok: false });
 
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id.toString(), user.isAdmin);
 
     res.status(200).json({
       message: "Sign in successfull",
