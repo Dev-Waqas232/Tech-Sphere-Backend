@@ -3,7 +3,7 @@ import multer from "multer";
 
 import { authenticate } from "../middlewares/authenticate";
 import { authorize } from "../middlewares/authorize";
-import { createProduct } from "../controller/product";
+import { createProduct, getProducts } from "../controller/product";
 
 const router = express.Router();
 
@@ -17,5 +17,7 @@ router.post(
   upload.single("image"),
   createProduct
 );
+
+router.get("/", authenticate, authorize, getProducts);
 
 export default router;
